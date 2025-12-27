@@ -7,7 +7,9 @@ class Settings(BaseSettings):
     SECRET_KEY: str
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRES_MINUTES: int = 60
-    REFRESH_TOKEN_EXPIRES_MINUTES: int = 600
+    REFRESH_TOKEN_EXPIRES_DAYS: int = 30
+    ACCESS_TOKEN_TYPE_FIELD: str = "access"
+    REFRESH_TOKEN_TYPE_FIELD: str = "refresh"
 
     DATABASE_URL: str
 

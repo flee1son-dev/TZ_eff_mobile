@@ -12,7 +12,7 @@ def update_user(
         db: Session,
 ) -> models.User:
     result = db.execute(select(models.User).where(models.User.id == user_id))
-    db_user = result.scalar_one_or_none
+    db_user = result.scalar_one_or_none()
 
     if not db_user:
         raise exceptions.UserNotFound()
@@ -39,7 +39,7 @@ def delete_user(
         db: Session
 ) -> models.User:
     result = db.execute(select(models.User).where(models.User.id == user_id))
-    db_user = result.scalar_one_or_none
+    db_user = result.scalar_one_or_none()
 
     if not db_user:
         raise exceptions.UserNotFound()
@@ -60,7 +60,7 @@ def get_user(
 ) -> models.User:
     result = db.execute(select(models.User).where(models.User.id == user_id))
 
-    user = result.scalar_one_or_none
+    user = result.scalar_one_or_none()
 
     if not user:
         raise exceptions.UserNotFound()

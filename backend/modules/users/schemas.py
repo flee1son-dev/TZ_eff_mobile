@@ -28,8 +28,8 @@ class UserResponse(UserBase):
 class UserUpdate(BaseModel):
     email: Optional[EmailStr] = Field(default=None, description="User's new email")
     last_name: Optional[str] = Field(default=None, min_length= 2, max_length=50, description="User's new last name")
-    password: Optional[str] = Field(..., min_length=8, max_length=32, description="User's new password")
-    password_repeat: Optional[str] = Field(..., min_length=8, max_length=32, description="User's repeat password")
+    password: Optional[str] = Field(min_length=8, max_length=32, description="User's new password")
+    password_repeat: Optional[str] = Field(min_length=8, max_length=32, description="User's repeat password")
 
 class UserUpdateRoles(BaseModel):
     permissions: Optional[UserRoles] = Field(default=None, description="New user's role")

@@ -62,7 +62,7 @@ def delete_user(
         user_id: int,
         user_delete_data: schemas.UserDelete,
         db: Session
-) -> models.User:
+) -> dict:
     result = db.execute(select(models.User).where(models.User.id == user_id))
     db_user = result.scalar_one_or_none()
 
@@ -77,7 +77,7 @@ def delete_user(
     db.commit()
     db.refresh(db_user)
     
-    return db_user
+    return {"detail": "User deleted"}
 
 def get_user(
         user_id: int,

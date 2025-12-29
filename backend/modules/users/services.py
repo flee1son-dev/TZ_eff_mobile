@@ -33,6 +33,31 @@ def update_user(
     return db_user
 
 
+def attach_worker_to_director(
+        director: models.User,
+        worker_id: int,
+        db: Session
+) -> models.User:
+    
+    if director.permissions != "director":
+        raise exceptions.UserForbidden()
+    
+    worker = db.get(models.User, worker_id)
+
+    if not worker:
+        raise exceptions.UserNotFound
+
+    if worker.permissions != "worker":
+        raise exceptions.ValidationError(detail="Only workers can be attached")
+    
+    worker.director_id = director.id
+    
+    db.commit()
+    db.refresh(worker)
+
+    return worker
+    
+
 def delete_user(
         user_id: int,
         user_delete_data: schemas.UserDelete,

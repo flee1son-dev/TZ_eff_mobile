@@ -4,7 +4,6 @@ from typing import Optional
 
 class UserRoles(str, Enum):
     director = "director"
-    administering = "administering"
     worker = "worker"
 
 
@@ -37,3 +36,6 @@ class UserUpdateRoles(BaseModel):
     
 class UserDelete(BaseModel):
     is_active: bool = Field(default=False, description="Set to False to deactivate user")
+
+class AttachWorker(BaseModel):
+    worker_id: int = Field(..., description="Worker status user ID")

@@ -2,7 +2,7 @@ from pydantic import BaseModel, EmailStr, Field
 from backend.modules.users import schemas as userschemas
 
 
-class UserCreate(userschemas.UserCreate):
+class UserRegister(userschemas.UserCreate):
     pass
 
 class UserLogin(BaseModel):

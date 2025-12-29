@@ -1,5 +1,6 @@
 from fastapi import HTTPException, status
 
+#USER
 class UserNotFound(HTTPException):
     def __init__(self):
         super().__init__(
@@ -59,4 +60,12 @@ class CredentialsException(HTTPException):
         super().__init__(
             status_code=status_code,
             detail=detail
+        )
+
+#TASK
+class TaskNotFound(HTTPException):
+    def __init__(self):
+        super().__init__(
+            status_code = status.HTTP_404_NOT_FOUND,
+            detail= "Task not found"
         )

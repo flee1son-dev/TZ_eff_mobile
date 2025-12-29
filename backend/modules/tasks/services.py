@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from backend.core import exceptions
 from backend.modules.tasks import schemas, models
 from backend.modules.users import models as usermodels
-from typing import List
+from typing import List, Dict
 
 
 def create_task(
@@ -65,7 +65,7 @@ def get_tasks_by_worker(
 def get_all_tasks(
         director_id: int,
         db: Session,
-):
+) -> List[models.Task]:
     result = db.execute(select(usermodels.User.id).where(usermodels.User.director_id == director_id))
     worker_ids = [row[0] for row in result.fetchall()]
     
@@ -76,6 +76,20 @@ def get_all_tasks(
     db_tasks = result_tasks.scalars().all()
 
     return db_tasks
+
+def delete_task(
+        task_id: int,
+        db: Session
+) -> dict:
+    result = db.execute(select(models.Task).where(models.Task.id == task_id))
+    db_task = result.scalar_one_or_none()
+
+    db.delete(db_task)
+    db.commit()
+    return {"detail": "Task deleted"}
+
+
+
 
 
 

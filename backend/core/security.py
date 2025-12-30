@@ -1,12 +1,15 @@
 from fastapi.security import OAuth2PasswordBearer
 from datetime import datetime, timedelta
 from passlib.context import CryptContext
+from sqlalchemy.orm import Session
+from sqlalchemy import select
 from fastapi import Depends
 from jose import JWTError
 import jwt
 from backend.core.config import settings
+from backend.core import exceptions
 from backend.core.database import get_db
-from backend.modules.users import schemas as userschemas
+from backend.modules.users import schemas as userschemas, models as usermodels
 
 
 SECRET_KEY = settings.SECRET_KEY
@@ -71,8 +74,8 @@ def create_jwt(
 
 def create_access_jwt(user: userschemas.UserBase):
     jwt_payload = {
-        "sub": user.username,
-        "username": user.username,
+        "sub": user.email,
+        "name": user.first_name,
         "email": user.email
     }
     return create_jwt(
@@ -84,8 +87,8 @@ def create_access_jwt(user: userschemas.UserBase):
 
 def create_refresh_jwt(user: userschemas.UserBase):
     jwt_payload = {
-        "sub": user.username,
-        "username": user.username,
+        "sub": user.email,
+        "name": user.first_name,
         "email": user.email
     }
     return create_jwt(
@@ -93,6 +96,24 @@ def create_refresh_jwt(user: userschemas.UserBase):
         payload=jwt_payload,
         expire_days= timedelta(days=REFRESH_TOKEN_EXPIRE)
     )
+
+
+def get_current_user(
+        db: Session = Depends(get_db),
+        token: str = Depends(oauth2scheme)
+):
+    try:
+        payload: dict = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
+        email: str = payload.get("sub")
+    except JWTError:
+        raise exceptions.CredentialsException()
+    
+    user = db.execute(select(usermodels.User).where(usermodels.User.email == email))
+
+    if not user:
+        raise exceptions.CredentialsException()
+    
+    return user
 
 
 

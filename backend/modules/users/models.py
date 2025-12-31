@@ -32,3 +32,8 @@ class User(Base):
         "User",
         back_populates="director"
     )
+
+    tasks = relationship(
+        "Task",
+        back_populates="worker"
+    )

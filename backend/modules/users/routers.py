@@ -56,7 +56,7 @@ def update_worker_from_director(
     
     return services.update_user_from_director(worker_id=worker_id, director_id=current_user.id, worker_update_data=worker_update_data, db=db)
 
-@router.put("/profile/update", response_models=schemas.UserResponse, status_code=status.HTTP_200_OK)
+@router.put("/profile/update", response_model=schemas.UserResponse, status_code=status.HTTP_200_OK)
 def update_profile(
     update_data: schemas.UserUpdate,
     current_user: models.User = Depends(security.get_current_user),

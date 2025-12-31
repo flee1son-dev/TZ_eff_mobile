@@ -29,7 +29,7 @@ def hash_password(pwd: str) -> str:
     return pwd_context.hash(pwd)
 
 def verify_password(pwd: str, hash_pwd: str) -> bool:
-    return pwd_context.verify(secret=pwd, hash=hash_password)
+    return pwd_context.verify(pwd, hash_pwd)
 
 
 def encode_jwt(
@@ -43,9 +43,9 @@ def encode_jwt(
 
     now = datetime.utcnow()
     if expire_days:
-        expire = datetime.utcnow + expire_days
+        expire = datetime.utcnow() + expire_days
     else:
-        expire = datetime.utcnow + timedelta(minutes=expire_minutes)
+        expire = datetime.utcnow() + timedelta(minutes=expire_minutes)
     to_encode.update(
         exp=expire,
         iat=now
@@ -108,7 +108,7 @@ def get_current_user(
     except JWTError:
         raise exceptions.CredentialsException()
     
-    user = db.execute(select(usermodels.User).where(usermodels.User.email == email))
+    user = db.execute(select(usermodels.User).where(usermodels.User.email == email)).scalar_one_or_none()
 
     if not user:
         raise exceptions.CredentialsException()

@@ -58,12 +58,6 @@ def login_user(
         db: Session
 ) -> schemas.TokenResponse:
     db_user = authentificate_user(email=user_data.email, password=user_data.password, db=db)
-
-    if not db_user:
-        raise exceptions.UserNotFound()
-    
-    if not db_user.is_active:
-        raise exceptions.UserInactive()
     
     access_token = security.create_access_jwt(user=db_user)
     refresh_token = security.create_refresh_jwt(user=db_user)

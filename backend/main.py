@@ -22,6 +22,6 @@ app.include_router(tasks_routers)
 
 Base.metadata.create_all(engine)
 
-@app.get("ping")
+@app.get("/ping")
 def ping():
     return {"status": "ok"}

@@ -1,6 +1,6 @@
 from fastapi import HTTPException, status
 
-#USER
+#TASK
 class UserNotFound(HTTPException):
     def __init__(self):
         super().__init__(

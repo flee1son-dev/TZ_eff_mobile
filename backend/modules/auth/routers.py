@@ -7,7 +7,7 @@ from backend.modules.users import schemas as userschemas
 
 router = APIRouter(
     prefix="/auth",
-    tags=["Auth"]
+    tags=["auth"]
 )
 
 @router.post("/register", response_model=userschemas.UserResponse, status_code=status.HTTP_201_CREATED)
@@ -18,7 +18,7 @@ def register(
     return services.register_user(user_data=user_data, db=db)
 
 
-@router.post("login", response_model=authschemas.TokenResponse, status_code=status.HTTP_200_OK)
+@router.post("/login", response_model=authschemas.TokenResponse, status_code=status.HTTP_200_OK)
 def login(
     user_data: authschemas.UserLogin,
     db: Session = Depends(get_db)

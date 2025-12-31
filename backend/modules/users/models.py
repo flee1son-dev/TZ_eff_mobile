@@ -12,7 +12,7 @@ class User(Base):
 
     last_name: Mapped[str] = mapped_column(nullable=False)
 
-    email: Mapped[EmailStr] = mapped_column(nullable=False, unique=True)
+    email: Mapped[str] = mapped_column(nullable=False, unique=True)
 
     password: Mapped[str] = mapped_column(nullable=False)
 
@@ -31,4 +31,9 @@ class User(Base):
     workers = relationship(
         "User",
         back_populates="director"
+    )
+
+    tasks = relationship(
+        "Task",
+        back_populates="worker"
     )

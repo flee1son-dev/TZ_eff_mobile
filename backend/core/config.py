@@ -12,6 +12,10 @@ class Settings(BaseSettings):
     REFRESH_TOKEN_TYPE_FIELD: str = "refresh"
 
     DATABASE_URL: str
+    POSTGRES_USER: str
+    POSTGRES_PASSWORD: str
+    POSTGRES_HOST: str
+    POSTGRES_DB: str
 
     model_config = {
         "env_file": ".env",
